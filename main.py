@@ -30,33 +30,33 @@ def professions():
     profession = choice(liste_professions)
     return profession
 
+
 @dataclass
 class NPC:
-    def __init__(self, force, agilite, constitution, intelligence, sagesse, charisme, class_armur, nom, race, espece, pv, proffession):
-        self.force = force
-        self.agilite = agilite
-        self.constitution = constitution
-        self.intelligence = intelligence
-        self.sagesse = sagesse
-        self.charisme = charisme
-        self.class_armur = class_armur
-        self.nom = nom
-        self.race = race
-        self.espece = espece
-        self.pv = pv
-        self.proffession = proffession
+    force: int = de_six()
+    agilite: int = de_six()
+    constitution: int = de_six()
+    intelligence: int = de_six()
+    sagesse: int = de_six()
+    charisme: int = de_six()
+    class_armur: int = randint(1, 12)
+    nom: str = noms()
+    race: str = "elf"
+    espece: str = "elf noir"
+    pv: int = randint(1, 20)
+    proffession: str = professions()
 
     def afficher_caracteristiques(self):
-        print(f"nom: {self.force}\nrace: {self.race}\nespece: {self.espece}\nproffession: {self.proffession}\nclasse d'armur: {self.class_armur}")
+        print(f"nom: {self.nom}\nrace: {self.race}\nespece: {self.espece}\nproffession: {self.proffession}\nclasse d'armur: {self.class_armur}")
         print(f"\npoints de vie: {self.pv}\nForce: {self.force}\nagilité: {self.agilite}\nconstitution: {self.constitution}\nintelligence: {self.intelligence}\nsagesse: {self.sagesse}\ncharisme: {self.charisme}")
 
 
 class Kobold(NPC):
     def __init__(self):
-        super().__init__(de_six(), de_six(), de_six(), de_six(), de_six(), de_six(), randint(1, 12), noms(), "elf", "elf noir", randint(1, 20), professions())
+        super().__init__()
 
     def attaquer(self):
-        self.cible = NPC
+        cible = NPC
         atteindre = randint(1, 20)
         de_huit = randint(1, 8)
         if atteindre == 1:
@@ -74,7 +74,7 @@ class Hero(NPC):
         super().__init__(de_six(), de_six(), de_six(), de_six(), de_six(), de_six(), randint(1, 12), noms(), "elf", "elf noir", randint(1, 20), professions())
 
 
-npc = NPC(de_six(), de_six(), de_six(), de_six(), de_six(), de_six(), randint(1, 12), noms(), "elf", "elf noir", randint(1, 20), professions())
+npc = NPC()
 npc.afficher_caracteristiques()
 
 k = Kobold()
