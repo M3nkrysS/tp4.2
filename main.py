@@ -48,30 +48,73 @@ class NPC:
 
     def afficher_caracteristiques(self):
         print(f"nom: {self.nom}\nrace: {self.race}\nespece: {self.espece}\nproffession: {self.proffession}\nclasse d'armur: {self.class_armur}")
-        print(f"\npoints de vie: {self.pv}\nForce: {self.force}\nagilité: {self.agilite}\nconstitution: {self.constitution}\nintelligence: {self.intelligence}\nsagesse: {self.sagesse}\ncharisme: {self.charisme}")
+        print(f"\npoints de vie: {self.pv}\nForce: {self.force}\nagilité: {self.agilite}\nconstitution: {self.constitution}\nintelligence: {self.intelligence}\nsagesse: {self.sagesse}\ncharisme: {self.charisme}\n")
 
 
 class Kobold(NPC):
     def __init__(self):
         super().__init__()
+        self.degat = randint(1, 6)
 
     def attaquer(self):
-        cible = NPC
         atteindre = randint(1, 20)
         de_huit = randint(1, 8)
         if atteindre == 1:
-            print("\nvous avez roulez un 1.\nVouz écouez lamentablement")
+            print("\nle kobold roule un 1.\nil échoue lamentablement")
         elif atteindre == 20:
-            print(f"\nBravo!Vouz avez roulez un 20.\nVous faites {de_huit} points de dommage à l'ennemi")
-            cible = self.pv - de_huit
+            print(f"\nBravo!le kobold a roulé un 20.\nil fait {de_huit} points de dommage à l'ennemi")
+            NPC().pv -= de_huit
         else:
             if atteindre >= NPC().class_armur:
-                print("ca marche")
+                print(f"le kobold a atteint la cible.\nil fait {self.degat} point(s) de dégat")
+                NPC().pv -= self.degat
+            elif atteindre < NPC().class_armur:
+                print("le kobold ne touche pas la cible")
+
+        print(f"L'ennemi a {NPC().pv} pv")
+
+    def subir_dommage(self):
+        atteindre = randint(1, 20)
+        if atteindre >= Kobold().class_armur:
+            print(f"le kobold se fait toucher, il perd {self.degat} pv")
+            Hero().pv -= self.degat
+        elif atteindre < Kobold().class_armur:
+            print("le kobold ne se fait pas touché")
+
+        print(f"le kobold a {Kobold().pv} pv")
 
 
 class Hero(NPC):
     def __init__(self):
-        super().__init__(de_six(), de_six(), de_six(), de_six(), de_six(), de_six(), randint(1, 12), noms(), "elf", "elf noir", randint(1, 20), professions())
+        super().__init__()
+        self.degat = randint(1, 6)
+
+    def attaquer(self):
+        atteindre = randint(1, 20)
+        de_huit = randint(1, 8)
+        if atteindre == 1:
+            print("\nle hero a roulé un 1.\nil échoue lamentablement")
+        elif atteindre == 20:
+            print(f"\nBravo!le hero a roulé un 20.\nil fait {de_huit} points de dommage à l'ennemi")
+            NPC().pv -= de_huit
+        else:
+            if atteindre >= NPC().class_armur:
+                print(f"le hero a atteint la cible.\nil fait {self.degat} point(s) de dégat")
+                NPC().pv -= self.degat
+            elif atteindre < NPC().class_armur:
+                print("le hero n'atteint pas la cible")
+
+        print(f"L'ennemi a {NPC().pv} pv")
+
+    def subir_dommage(self):
+        atteindre = randint(1, 20)
+        if atteindre >= Hero().class_armur:
+            print(f"le hero se fait toucher, il perd {self.degat} pv")
+            Hero().pv -= self.degat
+        elif atteindre < Hero().class_armur:
+            print("le hero ne se fait pas touché")
+
+        print(f"le hero a {Hero().pv} pv")
 
 
 npc = NPC()
@@ -79,3 +122,8 @@ npc.afficher_caracteristiques()
 
 k = Kobold()
 k.attaquer()
+#k.subir_dommage()
+
+#h = Hero()
+#h.attaquer()
+#h.subir_dommage()
