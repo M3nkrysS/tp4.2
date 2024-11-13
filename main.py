@@ -1,129 +1,101 @@
 """
-lucas beaudry tinkler
-groupe: 401
-création de personnages DnD
+Lucas B.T.
+Gr: 401
+introduction à POOP
 """
-from random import randint, choice
+import random
+from math import pi
 from dataclasses import dataclass
 
 
-def de_six():
-    atribut = []
-    for i in range(4):
-        roll = randint(1, 6)
-        atribut.append(roll)
-    atribut.sort()
-    atribut.pop(0)
-    resultat = sum(atribut)
-    atribut.clear()
-    return resultat
+class StringFoo:
+    def __init__(self):
+        self.message = "une phrase"
+
+    def set_string(self):
+        self.message = "message"
+
+    def print_string(self):
+        print(self.message.upper())
 
 
-def noms():
-    liste_nom = ["Bob", "Serge", "Marcus", "Jean-Yve", "Marie-Anne", "Sir Sacàmèche", "Adrienne"]
-    nom = choice(liste_nom)
-    return nom
+class Rectangle:
+    def __init__(self, length, width):
+        self.length = length
+        self.width = width
+
+    def calcul_aire(self):
+        self.aire = self.length * self.width
+
+    def afficher_infos(self):
+        print(f"\nLa longueur du rectangle est de {self.length}\nla largeur est de {self.width}\net l'aire est de {self.aire}\n")
 
 
-def professions():
-    liste_professions = ["barbare", "barde", "clerc", "druide", "ensorceleur", "guerrier", "magicien", "moine", "occultiste", "paladin", "rôdeur", "roublard"]
-    profession = choice(liste_professions)
-    return profession
+class Cercle:
+    def __init__(self, rayon):
+        self.rayon = rayon
+
+    def calcul_aire(self):
+        self.aire = pi * self.rayon ** 2
+        print(f"l'aire du cercle est de {self.aire}")
+
+    def calcul_circonference(self):
+        self.circonference = 2 * pi * self.rayon
+        print(f"la circonférence du cercle est de {self.circonference}\n")
+
+
+class Hero:
+    def __init__(self, nom_hero, pv, force_atk, force_def):
+        self.nom_hero = nom_hero
+        self.pv = pv
+        self.force_atk = force_atk
+        self.force_def = force_def
+
+    def faire_attaque(self):
+        attaque = self.force_atk + random.randint(1, 6)
+        return attaque
+
+    def recevoir_dommages(self, qte_dommage):
+        self.pv -= qte_dommage - self.force_def
+
+    def est_vivant(self):
+        self.vivant = True
+        if self.pv <= 0:
+            self.vivant = False
+        else:
+            pass
+        print(self.vivant)
+
+
+def de_vinght():
+    nbr = random.randint(1, 20)
+    return nbr
 
 
 @dataclass
-class NPC:
-    force: int = de_six()
-    agilite: int = de_six()
-    constitution: int = de_six()
-    intelligence: int = de_six()
-    sagesse: int = de_six()
-    charisme: int = de_six()
-    class_armur: int = randint(1, 12)
-    nom: str = noms()
-    race: str = "elf"
-    espece: str = "elf noir"
-    pv: int = randint(1, 20)
-    proffession: str = professions()
-
-    def afficher_caracteristiques(self):
-        print(f"nom: {self.nom}\nrace: {self.race}\nespece: {self.espece}\nproffession: {self.proffession}\nclasse d'armur: {self.class_armur}")
-        print(f"\npoints de vie: {self.pv}\nForce: {self.force}\nagilité: {self.agilite}\nconstitution: {self.constitution}\nintelligence: {self.intelligence}\nsagesse: {self.sagesse}\ncharisme: {self.charisme}\n")
+class PersonnageDnD:
+    force: int = de_vinght()
+    dexterite: int = de_vinght()
+    constitution: int = de_vinght()
+    intelligence: int = de_vinght()
+    sagesse: int = de_vinght()
+    charisme: int = de_vinght()
 
 
-class Kobold(NPC):
-    def __init__(self):
-        super().__init__()
-        self.degat = randint(1, 6)
+ligne = StringFoo()
+ligne.set_string()
+ligne.print_string()
 
-    def attaquer(self):
-        atteindre = randint(1, 20)
-        de_huit = randint(1, 8)
-        if atteindre == 1:
-            print("\nle kobold roule un 1.\nil échoue lamentablement")
-        elif atteindre == 20:
-            print(f"\nBravo!le kobold a roulé un 20.\nil fait {de_huit} points de dommage à l'ennemi")
-            NPC().pv -= de_huit
-        else:
-            if atteindre >= NPC().class_armur:
-                print(f"le kobold a atteint la cible.\nil fait {self.degat} point(s) de dégat")
-                NPC().pv -= self.degat
-            elif atteindre < NPC().class_armur:
-                print("le kobold ne touche pas la cible")
+r = Rectangle(2, 3, )
+r.calcul_aire()
+r.afficher_infos()
 
-        print(f"L'ennemi a {NPC().pv} pv")
+c = Cercle(6)
+c.calcul_aire()
+c.calcul_circonference()
 
-    def subir_dommage(self):
-        atteindre = randint(1, 20)
-        if atteindre >= Kobold().class_armur:
-            print(f"le kobold se fait toucher, il perd {self.degat} pv")
-            Hero().pv -= self.degat
-        elif atteindre < Kobold().class_armur:
-            print("le kobold ne se fait pas touché")
+h = Hero("George", random.randint(2, 20), random.randint(1, 6), random.randint(1, 6))
+h.recevoir_dommages(4)
+h.est_vivant()
 
-        print(f"le kobold a {Kobold().pv} pv")
-
-
-class Hero(NPC):
-    def __init__(self):
-        super().__init__()
-        self.degat = randint(1, 6)
-
-    def attaquer(self):
-        atteindre = randint(1, 20)
-        de_huit = randint(1, 8)
-        if atteindre == 1:
-            print("\nle hero a roulé un 1.\nil échoue lamentablement")
-        elif atteindre == 20:
-            print(f"\nBravo!le hero a roulé un 20.\nil fait {de_huit} points de dommage à l'ennemi")
-            NPC().pv -= de_huit
-        else:
-            if atteindre >= NPC().class_armur:
-                print(f"le hero a atteint la cible.\nil fait {self.degat} point(s) de dégat")
-                NPC().pv -= self.degat
-            elif atteindre < NPC().class_armur:
-                print("le hero n'atteint pas la cible")
-
-        print(f"L'ennemi a {NPC().pv} pv")
-
-    def subir_dommage(self):
-        atteindre = randint(1, 20)
-        if atteindre >= Hero().class_armur:
-            print(f"le hero se fait toucher, il perd {self.degat} pv")
-            Hero().pv -= self.degat
-        elif atteindre < Hero().class_armur:
-            print("le hero ne se fait pas touché")
-
-        print(f"le hero a {Hero().pv} pv")
-
-
-npc = NPC()
-npc.afficher_caracteristiques()
-
-k = Kobold()
-k.attaquer()
-#k.subir_dommage()
-
-#h = Hero()
-#h.attaquer()
-#h.subir_dommage()
+p = PersonnageDnD
