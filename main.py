@@ -1,101 +1,51 @@
 """
 Lucas B.T.
 Gr: 401
-introduction à POOP
+création de personnages D&D
 """
-import random
-from math import pi
+from random import randint
 from dataclasses import dataclass
 
 
-class StringFoo:
-    def __init__(self):
-        self.message = "une phrase"
-
-    def set_string(self):
-        self.message = "message"
-
-    def print_string(self):
-        print(self.message.upper())
+def roule_de(faces_de):
+    de = randint(1, faces_de)
+    return de
 
 
-class Rectangle:
-    def __init__(self, length, width):
-        self.length = length
-        self.width = width
-
-    def calcul_aire(self):
-        self.aire = self.length * self.width
-
-    def afficher_infos(self):
-        print(f"\nLa longueur du rectangle est de {self.length}\nla largeur est de {self.width}\net l'aire est de {self.aire}\n")
-
-
-class Cercle:
-    def __init__(self, rayon):
-        self.rayon = rayon
-
-    def calcul_aire(self):
-        self.aire = pi * self.rayon ** 2
-        print(f"l'aire du cercle est de {self.aire}")
-
-    def calcul_circonference(self):
-        self.circonference = 2 * pi * self.rayon
-        print(f"la circonférence du cercle est de {self.circonference}\n")
-
-
-class Hero:
-    def __init__(self, nom_hero, pv, force_atk, force_def):
-        self.nom_hero = nom_hero
-        self.pv = pv
-        self.force_atk = force_atk
-        self.force_def = force_def
-
-    def faire_attaque(self):
-        attaque = self.force_atk + random.randint(1, 6)
-        return attaque
-
-    def recevoir_dommages(self, qte_dommage):
-        self.pv -= qte_dommage - self.force_def
-
-    def est_vivant(self):
-        self.vivant = True
-        if self.pv <= 0:
-            self.vivant = False
-        else:
-            pass
-        print(self.vivant)
-
-
-def de_vinght():
-    nbr = random.randint(1, 20)
-    return nbr
+def roll_of_the_dices(nbr_de):
+    resultat_de = []
+    for i in range(nbr_de):
+        de = roule_de(6)
+        resultat_de.append(de)
+    resultat_de.remove(min(resultat_de))
+    valeur = sum(resultat_de)
+    return valeur
 
 
 @dataclass
-class PersonnageDnD:
-    force: int = de_vinght()
-    dexterite: int = de_vinght()
-    constitution: int = de_vinght()
-    intelligence: int = de_vinght()
-    sagesse: int = de_vinght()
-    charisme: int = de_vinght()
+class Atributs:
+    force: int = roll_of_the_dices(4)
+    agilite: int = roll_of_the_dices(4)
+    constitution: int = roll_of_the_dices(4)
+    intelligence: int = roll_of_the_dices(4)
+    sagesse: int = roll_of_the_dices(4)
+    charisme: int = roll_of_the_dices(4)
 
 
-ligne = StringFoo()
-ligne.set_string()
-ligne.print_string()
+class NPC:
+    def __init__(self):
+        self.force: int = roll_of_the_dices(4)
+        self.agilite: int = roll_of_the_dices(4)
+        self.sagesse: int = roll_of_the_dices(4)
+        self.charisme: int = roll_of_the_dices(4)
+        self.intelligence: int = roll_of_the_dices(4)
+        self.constitution: int = roll_of_the_dices(4)
+        self.ac = randint(1, 12)
+        self.nom = "oppenheimer"
+        self.race = "arakocra"
+        self.espece = "Rainbowplum"
+        self.pv = randint(1, 20)
+        self.proffession = "artificier"
 
-r = Rectangle(2, 3, )
-r.calcul_aire()
-r.afficher_infos()
-
-c = Cercle(6)
-c.calcul_aire()
-c.calcul_circonference()
-
-h = Hero("George", random.randint(2, 20), random.randint(1, 6), random.randint(1, 6))
-h.recevoir_dommages(4)
-h.est_vivant()
-
-p = PersonnageDnD
+    def afficher_characteristiques(self):
+        print(f"Nom: {self.nom}\nRace: {self.race}\nEspèce: {self.espece}\nProffession: {self.proffession}\nPoints de vie: {self.pv}\nClasse d'armure: {self.ac}\nForce: ")
