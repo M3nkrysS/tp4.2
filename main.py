@@ -4,7 +4,6 @@ Gr: 401
 création de personnages D&D
 """
 from random import randint
-from dataclasses import dataclass
 
 
 def roule_de(faces_de):
@@ -38,7 +37,7 @@ class NPC:
         self.proffession = proffession
 
     def afficher_characteristiques(self):
-        print(f"Nom: {self.nom}\nRace: {self.race}\nEspèce: {self.espece}\nProffession: {self.proffession}\nPoints de vie: {self.pv}\nClasse d'armure: {self.ac}\nForce: {self.force}\nagilite: {self.agilite}\nsagesse: {self.sagesse}\ncharisme: {self.charisme}\nintelligence: {self.intelligence}\nconstitution: {self.constitution}")
+        print(f"\nNom: {self.nom}\nRace: {self.race}\nEspèce: {self.espece}\nProffession: {self.proffession}\nPoints de vie: {self.pv}\nClasse d'armure: {self.ac}\nForce: {self.force}\nagilite: {self.agilite}\nsagesse: {self.sagesse}\ncharisme: {self.charisme}\nintelligence: {self.intelligence}\nconstitution: {self.constitution}")
 
 
 class Kobold(NPC):
@@ -48,7 +47,38 @@ class Kobold(NPC):
         self.result_dice8 = roule_de(8)
         self.result_dice6 = roule_de(6)
 
-    def attaquer(self,cible):
+    def attaquer(self, cible):
+        self.cible = cible
+        if self.result_dice20 == 20:
+            print(f"\nle Kobold a roulé un 20! L'ennemi reçoit {self.result_dice8} dégat")
+            self.cible.pv -= self.result_dice8
+        elif self.result_dice20 == 1:
+            print("\nL'attaque du Kobold a raté lamentablement")
+        else:
+            if self.result_dice20 >= self.cible.ac:
+                print(f"\nle Kobold a roulé un {self.result_dice20}. Il fait {self.result_dice6} dégat")
+                self.cible.pv -= self.result_dice6
+            else:
+                print(f"\nL'attaque du Kobold a raté, il a roulé un {self.result_dice20}")
+
+        print(f"la vie de l'ennemi est de: {self.cible.pv} pv")
+
+    def subir_dommage(self, qtte_dmg):
+        self.qtte_dmg = qtte_dmg
+        print(f"le kobold reçois {self.qtte_dmg} dégats")
+        self.pv -= self.qtte_dmg
+        print(f"le kobold a {self.pv} pv")
+
+
+
+class Hero(NPC):
+    def __init__(self):
+        super().__init__("oppenheimer", "arakocra", "Rainbowplum", "artificier")
+        self.result_dice20 = roule_de(20)
+        self.result_dice8 = roule_de(8)
+        self.result_dice6 = roule_de(6)
+
+    def attaquer(self, cible):
         self.cible = cible
         if self.result_dice20 == 20:
             print(f"\nle Kobold a roulé un 20! L'ennemi reçoit {self.result_dice8} dégat")
@@ -65,13 +95,10 @@ class Kobold(NPC):
         print(f"la vie de l'ennemi est de: {self.cible.pv} pv")
 
 
-class Hero(NPC):
-    def __init__(self):
-        super().__init__("oppenheimer", "arakocra", "Rainbowplum", "artificier")
-
-
-npc = NPC("ennemi", "méchan", "très méchant", "vilain")
+npc = NPC("ennemi", "méchant", "très méchant", "vilain")
 npc.afficher_characteristiques()
 
 k = Kobold()
+k.afficher_characteristiques()
 k.attaquer(npc)
+k.subir_dommage(roule_de(6))
