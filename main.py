@@ -22,30 +22,56 @@ def roll_of_the_dices(nbr_de):
     return valeur
 
 
-@dataclass
-class Atributs:
-    force: int = roll_of_the_dices(4)
-    agilite: int = roll_of_the_dices(4)
-    constitution: int = roll_of_the_dices(4)
-    intelligence: int = roll_of_the_dices(4)
-    sagesse: int = roll_of_the_dices(4)
-    charisme: int = roll_of_the_dices(4)
-
-
 class NPC:
-    def __init__(self):
-        self.force: int = roll_of_the_dices(4)
-        self.agilite: int = roll_of_the_dices(4)
-        self.sagesse: int = roll_of_the_dices(4)
-        self.charisme: int = roll_of_the_dices(4)
-        self.intelligence: int = roll_of_the_dices(4)
-        self.constitution: int = roll_of_the_dices(4)
+    def __init__(self, nom, race, espece, proffession):
+        self.force = roll_of_the_dices(4)
+        self.agilite = roll_of_the_dices(4)
+        self.sagesse = roll_of_the_dices(4)
+        self.charisme = roll_of_the_dices(4)
+        self.intelligence = roll_of_the_dices(4)
+        self.constitution = roll_of_the_dices(4)
         self.ac = randint(1, 12)
-        self.nom = "oppenheimer"
-        self.race = "arakocra"
-        self.espece = "Rainbowplum"
+        self.nom = nom
+        self.race = race
+        self.espece = espece
         self.pv = randint(1, 20)
-        self.proffession = "artificier"
+        self.proffession = proffession
 
     def afficher_characteristiques(self):
-        print(f"Nom: {self.nom}\nRace: {self.race}\nEspèce: {self.espece}\nProffession: {self.proffession}\nPoints de vie: {self.pv}\nClasse d'armure: {self.ac}\nForce: ")
+        print(f"Nom: {self.nom}\nRace: {self.race}\nEspèce: {self.espece}\nProffession: {self.proffession}\nPoints de vie: {self.pv}\nClasse d'armure: {self.ac}\nForce: {self.force}\nagilite: {self.agilite}\nsagesse: {self.sagesse}\ncharisme: {self.charisme}\nintelligence: {self.intelligence}\nconstitution: {self.constitution}")
+
+
+class Kobold(NPC):
+    def __init__(self):
+        super().__init__("Ken", "kobold", "kobold", "bard")
+        self.result_dice20 = roule_de(20)
+        self.result_dice8 = roule_de(8)
+        self.result_dice6 = roule_de(6)
+
+    def attaquer(self,cible):
+        self.cible = cible
+        if self.result_dice20 == 20:
+            print(f"\nle Kobold a roulé un 20! L'ennemi reçoit {self.result_dice8} dégat")
+            self.cible.pv -= self.result_dice8
+        elif self.result_dice20 == 1:
+            print("\nL'attaque du Kobold a raté lamentablement")
+        else:
+            if self.result_dice20 >= self.cible.ac:
+                print(f"\nle Kobold a roulé un {self.result_dice20}. Il fait {self.result_dice6} dégat")
+                self.cible.pv -= self.result_dice6
+            else:
+                print(f"\nL'attaque du Kobold a raté, il a roulé un {self.result_dice20}")
+
+        print(f"la vie de l'ennemi est de: {self.cible.pv} pv")
+
+
+class Hero(NPC):
+    def __init__(self):
+        super().__init__("oppenheimer", "arakocra", "Rainbowplum", "artificier")
+
+
+npc = NPC("ennemi", "méchan", "très méchant", "vilain")
+npc.afficher_characteristiques()
+
+k = Kobold()
+k.attaquer(npc)
