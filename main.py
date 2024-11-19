@@ -65,15 +65,13 @@ class Kobold(NPC):
 
     def subir_dommage(self, qtte_dmg):
         self.qtte_dmg = qtte_dmg
-        print(f"le kobold reçois {self.qtte_dmg} dégats")
         self.pv -= self.qtte_dmg
-        print(f"le kobold a {self.pv} pv")
-
+        print(f"\nle kobold reçois {self.qtte_dmg} dégats\nle kobold a {self.pv} pv")
 
 
 class Hero(NPC):
     def __init__(self):
-        super().__init__("oppenheimer", "arakocra", "Rainbowplum", "artificier")
+        super().__init__("Oppenheimer", "arakocra", "Rainbowplum", "artificier")
         self.result_dice20 = roule_de(20)
         self.result_dice8 = roule_de(8)
         self.result_dice6 = roule_de(6)
@@ -81,24 +79,33 @@ class Hero(NPC):
     def attaquer(self, cible):
         self.cible = cible
         if self.result_dice20 == 20:
-            print(f"\nle Kobold a roulé un 20! L'ennemi reçoit {self.result_dice8} dégat")
+            print(f"Oppenheimer a roulé un 20! L'ennemi reçoit {self.result_dice8} dégat")
             self.cible.pv -= self.result_dice8
         elif self.result_dice20 == 1:
-            print("\nL'attaque du Kobold a raté lamentablement")
+            print("L'attaque de Oppenheimer a raté lamentablement")
         else:
             if self.result_dice20 >= self.cible.ac:
-                print(f"\nle Kobold a roulé un {self.result_dice20}. Il fait {self.result_dice6} dégat")
+                print(f"Oppenheimer a roulé un {self.result_dice20}. Il fait {self.result_dice6} dégat")
                 self.cible.pv -= self.result_dice6
             else:
-                print(f"\nL'attaque du Kobold a raté, il a roulé un {self.result_dice20}")
+                print(f"L'attaque de Oppenheimer a raté, il a roulé un {self.result_dice20}")
 
         print(f"la vie de l'ennemi est de: {self.cible.pv} pv")
+
+    def subir_dommage(self, qtte_dmg):
+        self.qtte_dmg = qtte_dmg
+        self.pv -= self.qtte_dmg
+        print(f"Oppenheimer reçois {self.qtte_dmg} dégats\nOppenheimer a {self.pv} pv")
 
 
 npc = NPC("ennemi", "méchant", "très méchant", "vilain")
 npc.afficher_characteristiques()
 
 k = Kobold()
+h = Hero()
 k.afficher_characteristiques()
+h.afficher_characteristiques()
 k.attaquer(npc)
+h.attaquer(npc)
 k.subir_dommage(roule_de(6))
+h.subir_dommage(roule_de(6))
